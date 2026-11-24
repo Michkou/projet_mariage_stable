@@ -1,0 +1,49 @@
+{
+  "parametres": {
+    "n": 3,
+    "m": 3,
+    "mode": "exemple_cours",
+    "seed": null,
+    "total_places": 3,
+    "bruit": null
+  },
+  "etudiants": {
+    "i1": [
+      "s2",
+      "s1",
+      "s3"
+    ],
+    "i2": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "i3": [
+      "s1",
+      "s2",
+      "s3"
+    ]
+  },
+  "etablissements": {
+    "s1": [
+      "i1",
+      "i3",
+      "i2"
+    ],
+    "s2": [
+      "i2",
+      "i1",
+      "i3"
+    ],
+    "s3": [
+      "i2",
+      "i1",
+      "i3"
+    ]
+  },
+  "capacites": {
+    "s1": 1,
+    "s2": 1,
+    "s3": 1
+  }
+}
