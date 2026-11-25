@@ -3,13 +3,15 @@
 Format des donnees : celui de generateur_preferences.py
     data["etudiants"]      : {"e0": ["s2", "s0", ...]}   voeux, du prefere au moins aime
     data["etablissements"] : {"s0": ["e3", "e1", ...]}   priorites, du prefere au moins aime
-    data["capacites"]      : {"s0": 2, ...}              nombre de places
+    data["capacites"]      : {"s0": 1, ...}              nombre de places (1 par etablissement
+                                                          selon la consigne, mais l'algo
+                                                          marche aussi avec des capacites > 1)
 
 Resultat : affectation = {"e0": "s2", "e1": None, ...}   (None = pas de place)
 """
 
 import sys
-from generateur_preferences import charger, exemple_cours
+from generateur_preferences import charger, generer
 
 
 def mariage_stable(data):
@@ -80,9 +82,9 @@ def est_stable(data, affectation):
 
 
 if __name__ == "__main__":
-    # sans argument : jeu de 5 etudiants (seed 42), sinon le fichier json donne en argument
-    from generateur_preferences import generer
-    data = charger(sys.argv[1]) if len(sys.argv) > 1 else generer(5, 3, mode="uniforme", seed=42)
+    # sans argument : jeu de 5 etudiants et 5 etablissements (seed 42),
+    # sinon le fichier json donne en argument
+    data = charger(sys.argv[1]) if len(sys.argv) > 1 else generer(5, mode="uniforme", seed=42)
     aff = mariage_stable(data)
     stable, contre = est_stable(data, aff)
     non_affectes = sum(1 for s in aff.values() if s is None)
