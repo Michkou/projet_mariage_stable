@@ -4,7 +4,7 @@
     "m": 3,
     "mode": "exemple_cours",
     "seed": null,
-    "total_places": 3,
+    "places": 3,
     "bruit": null
   },
   "etudiants": {
