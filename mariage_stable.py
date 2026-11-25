@@ -81,13 +81,41 @@ def est_stable(data, affectation):
     return True, None
 
 
+def rang_obtenu(data, affectation):
+    # pour chaque etudiant : 1 = premier voeu, 2 = deuxieme voeu, ... ; None = pas de place
+    voeux = data["etudiants"]
+    return {e: (voeux[e].index(s) + 1 if s is not None else None)
+            for e, s in affectation.items()}
+
+
 if __name__ == "__main__":
     # sans argument : jeu de 5 etudiants et 5 etablissements (seed 42),
     # sinon le fichier json donne en argument
     data = charger(sys.argv[1]) if len(sys.argv) > 1 else generer(5, mode="uniforme", seed=42)
     aff = mariage_stable(data)
     stable, contre = est_stable(data, aff)
-    non_affectes = sum(1 for s in aff.values() if s is None)
-    print(f"stable={stable}, non affectes={non_affectes}")
+    rangs = rang_obtenu(data, aff)
+    affectes = [r for r in rangs.values() if r is not None]
+    non_affectes = len(rangs) - len(affectes)
+
+    print(f"{len(data['etudiants'])} etudiants, {len(data['etablissements'])} etablissements, "
+          f"{sum(data['capacites'].values())} places")
+    if stable:
+        print("stable=True (aucune paire bloquante)")
+    else:
+        print(f"stable=False : paire bloquante {contre}")
+    print(f"affectes={len(affectes)}, non affectes={non_affectes}")
+
+    if affectes:
+        print(f"rang moyen obtenu : {sum(affectes) / len(affectes):.2f}   "
+              f"(1 = premier voeu, plus c'est petit mieux c'est)")
+        print(f"premier voeu : {sum(1 for r in affectes if r == 1)}/{len(affectes)}   "
+              f"pire rang : {max(affectes)}")
+
     if len(aff) <= 10:
-        print(aff)
+        print()
+        for e, s in aff.items():
+            if s is None:
+                print(f"  {e} -> pas de place")
+            else:
+                print(f"  {e} -> {s}  (voeu n°{rangs[e]})")
